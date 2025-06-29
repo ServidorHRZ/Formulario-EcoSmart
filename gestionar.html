@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Postulaciones - EcoSmart Construcciones</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="./img/Logo_Color_Fondo_Negro_500x500.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilos específicos para la gestión */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            color: var(--color-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--color-white);
+        }
+
+        .dashboard-header p {
+            margin: var(--spacing-sm) 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .filters-section {
+            background-color: var(--color-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid var(--color-primary);
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--spacing-lg);
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .stat-card {
+            background-color: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid var(--color-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.clickable {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .stat-card.clickable:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+        }
+
+        .stat-card.clickable.active {
+            border-color: var(--color-primary);
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(69, 160, 73, 0.05) 100%);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .stat-card.clickable.active .stat-number {
+            color: var(--color-primary);
+        }
+
+        .stat-card.clickable.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary) 0%, #45a049 100%);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-card .stat-label {
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .postulaciones-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .postulacion-card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .postulacion-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, var(--color-primary) 0%, #45a049 100%);
+            color: var(--color-white);
+            padding: var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--color-white);
+            border: none;
+            background: none;
+            padding: 0;
+            opacity: 0.9;
+        }
+
+        .candidate-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-white);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: var(--spacing-lg);
+        }
+
+        .candidate-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .summary-main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .summary-item i {
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .postulacion-details {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-white);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            border: 2px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--color-white);
+            margin-bottom: var(--spacing-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            border-radius: 4px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--color-text);
+            word-wrap: break-word;
+            padding: var(--spacing-md) var(--spacing-sm);
+            margin-top: var(--spacing-xs);
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            min-height: 1.2em;
+        }
+
+        .status-badge {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-aceptado {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-rechazado {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            min-height: 45px;
+        }
+
+        .btn-action i {
+            font-size: 1.2rem;
+        }
+
+        .btn-ver {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-ver:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-aceptar {
+            background-color: var(--color-success);
+            color: white;
+        }
+
+        .btn-aceptar:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-rechazar {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-rechazar:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-info.rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .status-info i {
+            font-size: 1.1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-primary);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Modal para ver detalles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding-top: 2vh;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            max-width: 95vw;
+            width: 95vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin: 2.5vw;
+            padding: 0;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: var(--color-white);
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            margin: 0;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--color-white);
+            border: none;
+            background: none;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--color-white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: var(--spacing-xl);
+        }
+
+        .detail-section {
+            margin-bottom: var(--spacing-xl);
+            padding: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            border: 1px solid #e3f2fd;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.08);
+            overflow: hidden;
+        }
+
+        .detail-section h3 {
+            margin: 0;
+            color: var(--color-white);
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            padding: var(--spacing-lg);
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            border: none;
+        }
+
+        .detail-section h3 i {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .detail-section h4 {
+            margin: var(--spacing-lg) var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: rgba(76, 175, 80, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+        }
+
+        .info-item {
+            background-color: var(--color-white);
+            padding: var(--spacing-md);
+            border-radius: 10px;
+            border: 2px solid #d1d5db;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+            border-color: var(--color-primary);
+            background-color: #f8fffe;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.2;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            border-radius: 6px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-value {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-text);
+            line-height: 1.4;
+            min-height: 1.4em;
+            word-wrap: break-word;
+            padding: var(--spacing-md) var(--spacing-sm);
+            margin-top: var(--spacing-xs);
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        .info-value:empty::after {
+            content: "N/A";
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Estilos específicos para diferentes tipos de datos */
+        .info-item[data-type="currency"] .info-value {
+            color: #059669;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .info-item[data-type="date"] .info-value {
+            color: #7c3aed;
+            font-weight: 500;
+        }
+
+        .info-item[data-type="contact"] .info-value {
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .info-item[data-type="yes-no"] .info-value {
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .info-item[data-type="yes-no"] .info-value[data-value="Sí"] {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .info-item[data-type="yes-no"] .info-value[data-value="No"] {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        /* Mejoras para el status badge */
+        .status-badge {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .status-badge::before {
+            content: "●";
+            font-size: 0.8rem;
+        }
+
+        /* Mejoras para las secciones de texto largo */
+        .text-long {
+            background-color: #f8fafc;
+            padding: var(--spacing-md);
+            border-radius: 6px;
+            border-left: 3px solid var(--color-secondary);
+            margin: var(--spacing-md) var(--spacing-lg);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* Mejoras para las listas de sectores y áreas */
+        .sector-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-md) var(--spacing-lg);
+        }
+
+        .sector-item {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            color: var(--color-white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Mejoras para las imágenes de cédula */
+        .cedula-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            padding: var(--spacing-lg);
+        }
+
+        .cedula-image {
+            text-align: center;
+        }
+
+        .cedula-image h4 {
+            margin: 0 0 var(--spacing-md) 0;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .cedula-image img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 12px;
+            border: 3px solid var(--color-primary);
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .cedula-image img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive mejorado */
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+                padding: var(--spacing-md);
+            }
+
+            .info-item {
+                padding: var(--spacing-sm);
+            }
+
+            .detail-section h3 {
+                font-size: 1.1rem;
+                padding: var(--spacing-md);
+            }
+
+                         .cedula-images {
+                 grid-template-columns: 1fr;
+                 gap: var(--spacing-lg);
+                 padding: var(--spacing-md);
+             }
+
+             .modal-content {
+                 max-width: 98vw;
+                 width: 98vw;
+                 margin: 1vw;
+             }
+
+             .modal-header h2 {
+                 font-size: 1.2rem;
+             }
+
+             .modal-close {
+                 width: 40px;
+                 height: 40px;
+                 font-size: 1.6rem;
+             }
+         }
+
+        .cedula-images {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-md);
+        }
+
+        .cedula-image {
+            flex: 1;
+        }
+
+        .cedula-image img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--color-primary);
+        }
+
+        @media (max-width: 768px) {
+            .filters-row {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .postulacion-info {
+                grid-template-columns: 1fr;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                width: 100%;
+                justify-content: center;
+                min-height: 50px;
+                font-size: 1.2rem;
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .cedula-images {
+                flex-direction: column;
+            }
+        }
+        /* Estilos para ocultar contenido cuando no está autenticado */
+        .content-hidden {
+            display: none !important;
+        }
+
+        /* Estilos del Modal de Login */
+        .modal-login {
+            background-color: rgba(108, 117, 125, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: var(--spacing-lg);
+        }
+
+        .login-card {
+            background: var(--color-white);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            max-width: 420px;
+            width: 100%;
+            overflow: hidden;
+            animation: loginFadeIn 0.5s ease-out;
+        }
+
+        @keyframes loginFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            color: var(--color-white);
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            position: relative;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: var(--spacing-md);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .login-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .login-header h2 {
+            margin: 0 0 var(--spacing-xs) 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .login-body {
+            padding: var(--spacing-xl);
+        }
+
+        .login-field {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .login-field label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.95rem;
+        }
+
+        .login-field label i {
+            color: var(--color-primary);
+            width: 18px;
+        }
+
+        .login-field input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        .login-field input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background-color: var(--color-white);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .login-field input::placeholder {
+            color: #6c757d;
+        }
+
+        .login-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+            animation: errorShake 0.5s ease-in-out;
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #45a049 100%);
+            color: var(--color-white);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: var(--spacing-md);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: var(--spacing-md);
+            border-top: 1px solid #dee2e6;
+        }
+
+        .login-footer p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: var(--spacing-md);
+            }
+
+            .login-card {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .login-header {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .login-logo {
+                width: 70px;
+                height: 70px;
+            }
+
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .login-header p {
+                font-size: 0.9rem;
+            }
+
+            .login-body {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .login-field {
+                margin-bottom: var(--spacing-md);
+            }
+
+            .login-field input {
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+
+            .login-btn {
+                padding: var(--spacing-md);
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .login-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .login-logo {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Mejoras adicionales para la experiencia de usuario */
+        .login-field input[type="password"] {
+            font-family: -webkit-text-security, monospace;
+        }
+
+        .login-field input:invalid {
+            border-color: #dc3545;
+        }
+
+        .login-field input:valid {
+            border-color: #28a745;
+        }
+
+        /* Responsive adicional para las nuevas tarjetas */
+        @media (max-width: 768px) {
+            .summary-main {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-sm);
+            }
+
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .candidate-name {
+                font-size: 1.1rem;
+            }
+
+            .header-info {
+                gap: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-main {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-item {
+                font-size: 0.9rem;
+            }
+
+            .summary-item i {
+                font-size: 1rem;
+            }
+
+            .candidate-name {
+                font-size: 1rem;
+            }
+
+            .card-header h3 {
+                font-size: 0.9rem;
+            }
+
+            .btn-action {
+                min-height: 55px;
+                font-size: 1.1rem;
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+
+            .btn-action i {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container content-hidden" id="mainContent">
+        <header class="header">
+            <img src="./img/Logo_Color_Fondo_Negro_500x500.png" alt="EcoSmart Logo" class="logo">
+            <h1>Gestión de Postulaciones</h1>
+            <p>Panel de administración para revisar y gestionar las postulaciones de empleo</p>
+            <div class="header-nav">
+                <button id="btnCerrarSesion" class="btn-nav">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <!-- Estadísticas -->
+        <div class="stats-section">
+            <div class="stat-card clickable" data-filter="">
+                <div class="stat-number" id="totalPostulaciones">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-card clickable active" data-filter="pendiente">
+                <div class="stat-number" id="pendientesCount">0</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+            <div class="stat-card clickable" data-filter="aceptado">
+                <div class="stat-number" id="aceptadosCount">0</div>
+                <div class="stat-label">Aceptados</div>
+            </div>
+            <div class="stat-card clickable" data-filter="rechazado">
+                <div class="stat-number" id="rechazadosCount">0</div>
+                <div class="stat-label">Rechazados</div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-section">
+            <h2><i class="fas fa-filter"></i> Filtros y Búsqueda Avanzada</h2>
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label for="filtroEstado">Estado:</label>
+                    <select id="filtroEstado">
+                        <option value="">Todos los estados</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="aceptado">Aceptado</option>
+                        <option value="rechazado">Rechazado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filtroCiudad">Ciudad:</label>
+                    <select id="filtroCiudad">
+                        <option value="">Todas las ciudades</option>
+                        <option value="Bogotá">Bogotá</option>
+                        <option value="Medellín">Medellín</option>
+                        <option value="Cali">Cali</option>
+                        <option value="Barranquilla">Barranquilla</option>
+                        <option value="Cartagena">Cartagena</option>
+                        <option value="Bucaramanga">Bucaramanga</option>
+                        <option value="Pereira">Pereira</option>
+                        <option value="Santa Marta">Santa Marta</option>
+                        <option value="Manizales">Manizales</option>
+                        <option value="otra">Otra ciudad</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filtroCedula">Número de Cédula:</label>
+                    <input type="text" id="filtroCedula" placeholder="Ej: 1234567890">
+                </div>
+                <div class="filter-group">
+                    <label for="filtroBusqueda">Búsqueda General:</label>
+                    <input type="text" id="filtroBusqueda" placeholder="Nombre, cargo, email...">
+                </div>
+                <div class="filter-group">
+                    <button type="button" id="btnLimpiarFiltros" class="btn-secundario">
+                        <i class="fas fa-eraser"></i> Limpiar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Postulaciones -->
+        <div id="postulacionesContainer">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Cargando postulaciones...
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="modalLogin" class="modal-overlay modal-login active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <img src="./img/Logo_Color_Fondo_Negro_500x500.png" alt="EcoSmart Logo" class="login-logo">
+                    <h2>Bienvenido</h2>
+                    <p>Ingresa a tu cuenta para acceder al sistema</p>
+                </div>
+                <div class="login-body">
+                    <form id="formLogin">
+                        <div class="login-field">
+                            <label for="loginUser">
+                                <i class="fas fa-user"></i>
+                                Usuario
+                            </label>
+                            <input type="text" id="loginUser" placeholder="Ingrese su usuario" required>
+                        </div>
+                        <div class="login-field">
+                            <label for="loginPassword">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <input type="password" id="loginPassword" placeholder="Ingrese su contraseña" required>
+                        </div>
+                        <div id="loginError" class="login-error"></div>
+                        <button type="submit" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <p>EcoSmart Construcciones S.A.S</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles -->
+    <div id="modalDetalles" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Detalles de la Postulación</h2>
+                <button class="modal-close" onclick="cerrarModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="gestionar.js"></script>
+</body>
+</html> 

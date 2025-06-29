@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "formulario-ecosmart",
+  "private_key_id": "0b320b2a4a433495bd80f17e0f9aab7928f67dd7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7ru3lpIJOVZBF\n3Ya7JIS0fchwHlgpFqQOAKeRVLOpP89XdtGACysaT5IfXA4EKfOVxSrE+TFBm1lJ\nZH5xYNxG+tdFgHCf6g03pn5x0lgdRemGLz31/uQ7rmZQoj4PFWn0HO/jfY7T+pHG\ndqfLnD4Wol81edQkV4Yoc/AOlxOWvdCie8hDrv0QWoOSnrqnKVA9jHyzWpyvkckS\nxhPIa68hH705H2bPbYcVWyhOsZ/mqTBh2JhrFnp1yLDwpjsUOe8lJ27qUdPPs1xh\nUrlxI8YH33DIPktrb/NUbDozjTVlP904ZLvqNAmDQN+0BTqlvaDr3ePlKZVcauUH\n2qFlpMT1AgMBAAECggEACJwlSMArxCkztajMegBaYCdXDyGtPLFPtF6+UTH4Df8h\n5WrLgJrCjvHwi6S+9dzw0kGZzTB7XH2icnX8QPpHELCIOKWERSnJEnD+Yv1Z0nn3\nFRNMveDEGqLNCczvmOSMGElNjfugFkRr9JVT7EjOJl6rjHn6y/IB8xAihqDSorsd\nMSzxmqFFNB4cL8j3ghpc/Rcr9aHp7fJDN6a74cKvz8RKoxiXBMqYFo69E3N5hahw\nNNjUFZI/cYlNFswzE1SAKrxVgwuwZj0yHzqQI+2JEcJL3aeDg9rz2OwzD7FjyiMT\n4Wgi0hqSiKVDi7EcHNXeJyCi2lkf9TcEPmFJNITeUQKBgQD6fKcO7TkMaGNRsSA8\nMGfEcz22dWEScEuySmhnvEtI8bxXn0fbIXT6WybXN6/UTqvUS+uhCfjwrLEh979q\nQ2J5qmM0uBivLrWplDEcWCvMuRzImOqjniQOyOkXRmif1QMKjHiiLIR794CZLDd0\n7b3AlvZPjot7m7i9/wOsSE+H3QKBgQC/0GpDnPmCWvbe9G059KjYV8+6YWhQOuoz\nDzbBlys0+RjbdN44VDbjkPbpvt+nI4JqlEiXo1U5bGL9W/2Exn1UQFq08tAS93OZ\nTj5ntcFZ4krMof1th1l07OslqQcqswg99d9k3Uj6uxGIpv9jYGINzTIATvTBjVpz\n4+HvNp2r+QKBgQDWV3RcwYHfrDPQ49DBsGobIMHeL/Mw5AbiOem9WtLRSInyMMo8\nKRUAZp+F6pD7C5bdw1mOJApxaFTqzCVvuNm7YqIhqqb0wPOSeMzNhGV2ebC3tqKR\n//C69hD/abB9lLlVfX58x7tWmSPh7oRF+mo1MvjyevfAfjBH5MAv3HCxwQKBgDfe\nq+UPxvk6J6gfR+VWpwuE4EOodarQzkCbENbogjRGzf+2FbgQh4BXTCQfbaOQSz9h\n+5b3gy5brKWhcsGG0yCEMid8hjDQFMK1sKWiojPdHu5lzJxnjR3qmD968VR1m1P4\n1t3ZOpWVgXDtO3wlqcndV9ARL2dlFdClsrxrixd5AoGAThwOe6Vqnhy2C+5/wQ4d\nwWcLXBR5UbelPI1JogEBvQoHDpPa5ZHG9JIyDQvBd95nn0b6KzoNK6H1u+CYxpRx\ntN0pCdcP/gf+myIZEaS1ffob/vPy7K4rLsXx67sTcSaeqUHKeccka1C8IB5TuZ+Q\ndttc+/UgDpV5OazmXben7Dw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@formulario-ecosmart.iam.gserviceaccount.com",
+  "client_id": "107820643648875720742",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40formulario-ecosmart.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
